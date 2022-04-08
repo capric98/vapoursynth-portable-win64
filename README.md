@@ -1,6 +1,6 @@
 # vapoursynth-portable-win64
 
-Run a portable version of vapoursynth, so you can install any version of Python you like in `PATH` without breaking any dependencies.
+Run a portable version of vapoursynth out-of-the-box, so you can install any version of Python you like in `PATH` without breaking any dependencies.
 
 ## Packages
 
@@ -17,3 +17,6 @@ call bootstrap.bat
 VSPipe.exe script.vpy --y4m - | x264 - --demuxer y4m -o output.mkv
 VSPipe.exe script.vpy --y4m - | x265 - --y4m -o output.mkv
 ```
+
+## 
+https://github.com/YomikoR/VapourSynth-Editor/releases/latest

@@ -67,7 +67,7 @@ jobs:
 
           cd build
           rm -rf Python3/doc
-          rm -rf "$(find . -name __pycache__)"
+          rm -rf $(find . -name __pycache__ -print0 | xargs -0 echo)
           tar -a -c -f ../VapourSynth64-Portable-${vs_version}.zip
           cd ..
 
