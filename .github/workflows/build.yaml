@@ -24,7 +24,7 @@ jobs:
           export py_version=$(cat config/Python.txt)
           curl -fSL "https://www.python.org/ftp/python/${py_version}/python-${py_version}-embed-amd64.zip" -o tmp/python-${py_version}-embed.zip
           unzip tmp/python-${py_version}-embed.zip -d build/Python3
-          sed -i "s|#import|import site|g" $(ls build/Python3/*._pth)
+          # sed -i "s|#import|import site|g" $(ls build/Python3/*._pth)
 
       - name: Install pip&cython
         run: |
