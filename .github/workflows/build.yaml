@@ -69,7 +69,6 @@ jobs:
           cd build
           rm -rf Python3/doc
           rm -rf $(find . -name __pycache__ -print0 | xargs -0 echo)
-          tree
           python ../zip-r.py ../VapourSynth64-Portable-${vs_version}.zip *
           cd ..
 
@@ -91,25 +90,25 @@ jobs:
           echo "\`${date_utc}\`" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: artifacts.zip
-          path: .
+      # - name: Upload Artifact
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: artifacts
+      #     path: build
 
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          name: ${{ env.RELEASE_NAME }}
-          tag_name: ${{ env.RELEASE_TAGNAME }}
-          body: ${{ env.RELEASE_BODY }}
-          files: ${{ env.RELEASE_FILENAME }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Release
+      #   uses: softprops/action-gh-release@v1
+      #   with:
+      #     name: ${{ env.RELEASE_NAME }}
+      #     tag_name: ${{ env.RELEASE_TAGNAME }}
+      #     body: ${{ env.RELEASE_BODY }}
+      #     files: ${{ env.RELEASE_FILENAME }}
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Artifact for Debugging
         uses: actions/upload-artifact@v3
         with:
-          name: build.zip
-          path: build
-        if: failure()
+          name: repo
+          path: .
+        if: success() || failure()
