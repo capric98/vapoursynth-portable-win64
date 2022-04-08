@@ -54,14 +54,8 @@ jobs:
         run: |
           export PATH=$(pwd)/build/Python3:$(pwd)/build/Python3/Scripts:${PATH}
 
-          repo_list=""
-
-          for pkg in $(cat config/Scripts.txt); do
-            repo_list="${repo_list} ${pkg}"
-          done
-          for pkg in $(cat config/Plugins.txt); do
-            repo_list="${repo_list} ${pkg}"
-          done
+          repo_list="$(cat config/Scripts.txt) $(cat config/Plugins.txt)"
+          repo_list=$(echo "${repo_list}"|tr "\n" " ")
 
           echo "vsrepo install ${repo_list} -p"
           vsrepo update -p
