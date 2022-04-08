@@ -19,4 +19,4 @@ VSPipe.exe script.vpy --y4m - | x265 - --y4m -o output.mkv
 ```
 
 ## 
-https://github.com/YomikoR/VapourSynth-Editor/releases/latest
+An awesome fork of VapourSynth-Editor which supports v4 API can be founded [here](https://github.com/YomikoR/VapourSynth-Editor/releases/latest).
