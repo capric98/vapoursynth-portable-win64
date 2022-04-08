@@ -28,10 +28,11 @@ jobs:
           # echo "import site" > $(ls build/Python3/*._pth)
 
       - name: Install pip&cython
+        shell: cmd
         run: |
+          set %cd%\\build\\Python3;%cd%\\build\\Python3\\Scripts;%PATH%
           curl -fSL "https://bootstrap.pypa.io/get-pip.py" -o tmp/get-pip.py
-          export PATH=$(pwd)/build/Python3:$(pwd)/build/Python3/Scripts:${PATH}
-          echo "${PATH}"
+          echo %PATH%
           python tmp/get-pip.py
           pip install cython
 
