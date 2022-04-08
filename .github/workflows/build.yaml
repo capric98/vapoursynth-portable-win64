@@ -78,7 +78,7 @@ jobs:
           echo "RELEASE_TAGNAME=${release_tagname//-/.}" >> $GITHUB_ENV
           echo "RELEASE_FILENAME=VapourSynth64-Portable-${vs_version}.zip" >> $GITHUB_ENV
           
-          date_utc=$(echo -e "from datetime import datetime\nprint(datetime.now().strftime(\"%Y-%m-%dT%H:%m:%SZ\"))" | python)
+          date_utc=$(echo -e "from datetime import datetime\nprint(datetime.now().strftime(\"%Y-%m-%dT%H:%M:%SZ\"))" | python)
           echo "RELEASE_BODY<<EOF" >> $GITHUB_ENV
           echo "### Info" >> $GITHUB_ENV
           echo "|Library|Version|" >> $GITHUB_ENV
