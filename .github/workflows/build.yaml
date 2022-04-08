@@ -71,15 +71,17 @@ jobs:
           tar -a -c -f ../VapourSynth64-Portable-${vs_version}.zip *
           cd ..
 
-          date_utc=$(echo -e "from datetime import datetime\nprint(datetime.now().strftime(\"%Y-%m-%dT%H:%m:%SZ\"))" | python)
-          release_body=$(echo -e "Python: ${py_version}\nVapourSynth: ${vs_version}\nDate: ${date_utc}")
           release_name="v0.${py_version//.}.${vs_version//[RC]}"
           release_tagname="v0.${py_version//.}.${vs_version//[RC]}+${GITHUB_SHA::7}"
 
           echo "RELEASE_NAME=${release_name//-/.}" >> $GITHUB_ENV
           echo "RELEASE_TAGNAME=${release_tagname//-/.}" >> $GITHUB_ENV
-          echo "RELEASE_BODY=${release_body}" >> $GITHUB_ENV
           echo "RELEASE_FILENAME=VapourSynth64-Portable-${vs_version}.zip" >> $GITHUB_ENV
+          
+          date_utc=$(echo -e "from datetime import datetime\nprint(datetime.now().strftime(\"%Y-%m-%dT%H:%m:%SZ\"))" | python)
+          echo "RELEASE_BODY<<EOF" >> $GITHUB_ENV
+          echo -e "Python: ${py_version}\nVapourSynth: ${vs_version}\nDate: ${date_utc}" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
