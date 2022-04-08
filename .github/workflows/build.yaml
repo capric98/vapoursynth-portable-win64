@@ -72,7 +72,7 @@ jobs:
           cd ..
 
           date_utc=$(echo -e "from datetime import datetime\nprint(datetime.now().strftime(\"%Y-%m-%dT%H:%m:%SZ\"))" | python)
-          release_body="Python: ${py_version}\nVapourSynth: ${vs_version}\nDate: ${date_utc}"
+          release_body=$(echo -e "Python: ${py_version}\nVapourSynth: ${vs_version}\nDate: ${date_utc}")
           release_name="v0.${py_version//.}.${vs_version//[RC]}"
           release_tagname="v0.${py_version//.}.${vs_version//[RC]}+${GITHUB_SHA::7}"
 
