@@ -53,14 +53,19 @@ jobs:
       - name: Install Packages
         run: |
           export PATH=$(pwd)/build/Python3:$(pwd)/build/Python3/Scripts:${PATH}
-          echo "Install Scripts.txt..."
+          vsrepo update
+
+          repo_list=""
+
           for pkg in $(cat config/Scripts.txt); do
-            python -m vsrepo install ${pkg}
+            repo_list="${repo_list} ${pkg}"
           done
-          echo "Install Plugins.txt..."
           for pkg in $(cat config/Plugins.txt); do
-            python -m vsrepo install ${pkg}
+            repo_list="${repo_list} ${pkg}"
           done
+
+          echo "vsrepo install ${repo_list}"
+          vsrepo install ${repo_list}
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
