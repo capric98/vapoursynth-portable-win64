@@ -1,9 +1,11 @@
-name: Release
+name: Build
 
 on:
   push:
     paths:
       - "config/*.txt"
+      - ".github/workflows/*.yml"
+      - ".github/workflows/*.yaml"
 
 jobs:
   check:
