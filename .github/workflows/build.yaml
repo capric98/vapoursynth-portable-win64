@@ -62,13 +62,18 @@ jobs:
 
       - name: Zip
         run: |
+          export PATH=$(pwd)/build/Python3:$(pwd)/build/Python3/Scripts:${PATH}
           export py_version=$(cat config/Python.txt)
           export vs_version=$(cat config/VapourSynth.txt)
+
+          date_utc=$(echo -e "from datetime import datetime\nprint(datetime.now().strftime(\"%Y-%m-%dT%H:%M:%SZ\"))" | python)
+          zip-r-pyc=$(echo -e "import py_compile\nprint(py_compile.compile(\"zip-r.py\"))" | python)
+          mv ${zip-r-pyc} zip-r.pyc
 
           cd build
           rm -rf Python3/doc
           rm -rf $(find . -name __pycache__ -print0 | xargs -0 echo)
-          tar -a -c -f ../VapourSynth64-Portable-${vs_version}.zip *
+          python ../zip-r.pyc ../VapourSynth64-Portable-${vs_version}.zip *
           cd ..
 
           release_name="v0.${py_version//.}.${vs_version//[RC]}"
@@ -77,8 +82,7 @@ jobs:
           echo "RELEASE_NAME=${release_name//-/.}" >> $GITHUB_ENV
           echo "RELEASE_TAGNAME=${release_tagname//-/.}" >> $GITHUB_ENV
           echo "RELEASE_FILENAME=VapourSynth64-Portable-${vs_version}.zip" >> $GITHUB_ENV
-          
-          date_utc=$(echo -e "from datetime import datetime\nprint(datetime.now().strftime(\"%Y-%m-%dT%H:%M:%SZ\"))" | python)
+
           echo "RELEASE_BODY<<EOF" >> $GITHUB_ENV
           echo "### Info" >> $GITHUB_ENV
           echo "|Library|Version|" >> $GITHUB_ENV
