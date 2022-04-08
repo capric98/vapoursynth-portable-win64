@@ -42,20 +42,14 @@ jobs:
           export PATH=$(pwd)/build/Python3:$(pwd)/build/Python3/Scripts:${PATH}
           VSPipe -v
 
-      - name: Install VSRepo
-        run: |
-          export PATH=$(pwd)/build/Python3:$(pwd)/build/Python3/Scripts:${PATH}
-          git clone https://github.com/vapoursynth/vsrepo tmp/vsrepo
-          cd tmp/vsrepo
-          python setup.py install
-          cd ../../
-
       - name: Install Packages
         run: |
           export PATH=$(pwd)/build/Python3:$(pwd)/build/Python3/Scripts:${PATH}
 
           repo_list="$(cat config/Scripts.txt) $(cat config/Plugins.txt)"
           repo_list=$(sed -e "s/^[ \n\t\r]+/ /"<<<"${repo_list}")
+
+          pip install vsrepo
 
           vsrepo update -p
           vsrepo install ${repo_list} -p
