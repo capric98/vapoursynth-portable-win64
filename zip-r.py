@@ -10,6 +10,8 @@ def add_to_zip(input: str, zip: zipfile.ZipFile):
         for root, _, files in os.walk(input):
             for file in files:
                 f_path = os.path.join(root, file)
+                if "__pycache__" in f_path: continue
+                if "__pypackages__" in f_path: continue
                 zip.write(f_path, f_path)
 
 if __name__=="__main__":

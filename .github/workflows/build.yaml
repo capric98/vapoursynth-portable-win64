@@ -66,16 +66,13 @@ jobs:
           export py_version=$(cat config/Python.txt)
           export vs_version=$(cat config/VapourSynth.txt)
 
-          date_utc=$(echo -e "from datetime import datetime\nprint(datetime.now().strftime(\"%Y-%m-%dT%H:%M:%SZ\"))" | python)
-          zip-r-pyc=$(echo -e "import py_compile\nprint(py_compile.compile(\"zip-r.py\"))" | python)
-          mv ${zip-r-pyc} zip-r.pyc
-
           cd build
           rm -rf Python3/doc
           rm -rf $(find . -name __pycache__ -print0 | xargs -0 echo)
-          python ../zip-r.pyc ../VapourSynth64-Portable-${vs_version}.zip *
+          python ../zip-r.py ../VapourSynth64-Portable-${vs_version}.zip *
           cd ..
 
+          date_utc=$(echo -e "from datetime import datetime\nprint(datetime.now().strftime(\"%Y-%m-%dT%H:%M:%SZ\"))" | python)
           release_name="v0.${py_version//.}.${vs_version//[RC]}"
           release_tagname="v0.${py_version//.}.${vs_version//[RC]}+${GITHUB_SHA::7}"
 
