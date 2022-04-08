@@ -55,23 +55,26 @@ jobs:
           export PATH=$(pwd)/build/Python3:$(pwd)/build/Python3/Scripts:${PATH}
 
           repo_list="$(cat config/Scripts.txt) $(cat config/Plugins.txt)"
-          repo_list=$(echo "${repo_list}"|tr "\n" " ")
+          repo_list=$(sed -e "s/^[ \n\t\r]+/ /"<<<"${repo_list}")
 
           echo "vsrepo install ${repo_list} -p"
           vsrepo update -p
           vsrepo install ${repo_list} -p
 
-      - name: Upload Build Artifact
+      - name: Artifact for Debugging
         uses: actions/upload-artifact@v3
         with:
           name: build
           path: build
-        if: success() || failure()
+        # if: failure()
 
-      # - name: Zip
-      #   shell: cmd
-      #   run: |
-      #     tar.exe -a -c -f Addons.zip --exclude "cython.py" --exclude ".keep" Python3.9/Lib/site-packages/*.py Python3.9/vapoursynth64/plugins/*
+      - name: Zip
+        run: |
+          export vs_version=$(cat config/VapourSynth.txt)
+
+          cd build
+          zip -r ../VapourSynth64-${vs_version}.zip *
+          cd ..
 
       # - name: Release
       #   uses: softprops/action-gh-release@v1
