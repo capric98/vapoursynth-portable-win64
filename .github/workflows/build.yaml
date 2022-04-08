@@ -57,28 +57,49 @@ jobs:
           repo_list="$(cat config/Scripts.txt) $(cat config/Plugins.txt)"
           repo_list=$(sed -e "s/^[ \n\t\r]+/ /"<<<"${repo_list}")
 
-          echo "vsrepo install ${repo_list} -p"
           vsrepo update -p
           vsrepo install ${repo_list} -p
 
-      - name: Artifact for Debugging
-        uses: actions/upload-artifact@v3
-        with:
-          name: build
-          path: build
-        # if: failure()
-
       - name: Zip
         run: |
+          export py_version=$(cat config/Python.txt)
           export vs_version=$(cat config/VapourSynth.txt)
 
           cd build
-          zip -r ../VapourSynth64-${vs_version}.zip *
+          rm -rf Python3/doc
+          rm -rf "$(find . -name __pycache__)"
+          tar -a -c -f ../VapourSynth64-Portable-${vs_version}.zip
           cd ..
 
-      # - name: Release
-      #   uses: softprops/action-gh-release@v1
-      #   with:
-      #     files: Addons.zip
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          date_utc=$(echo -e "from datetime import datetime\nprint(datetime.now().strftime(\"%Y-%m-%dT%H:%m:%SZ\"))" | python)
+          release_body="Python: ${py_version}\nVapourSynth: ${vs_version}\nDate: ${date_utc}"
+          release_name="v0.${py_version//.}.${vs_version//[RC]}"
+          release_tagname="v0.${py_version//.}.${vs_version//[RC]}+${GITHUB_SHA::7}"
+
+          echo "RELEASE_NAME=${release_name//-/.}" >> $GITHUB_ENV
+          echo "RELEASE_TAGNAME=${release_tagname//-/.}" >> $GITHUB_ENV
+          echo "RELEASE_BODY=${release_body}" >> $GITHUB_ENV
+          echo "RELEASE_FILENAME=VapourSynth64-Portable-${vs_version}.zip" >> $GITHUB_ENV
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build.zip
+          path: VapourSynth64-*.zip
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ${{ env.RELEASE_NAME }}
+          tag_name: ${{ env.RELEASE_TAGNAME }}
+          body: ${{ env.RELEASE_BODY }}
+          files: ${{ env.RELEASE_FILENAME }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Artifact for Debugging
+        uses: actions/upload-artifact@v3
+        with:
+          name: build.zip
+          path: build
+        if: failure()
