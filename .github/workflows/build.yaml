@@ -24,17 +24,16 @@ jobs:
           export py_version=$(cat config/Python.txt)
           curl -fSL "https://www.python.org/ftp/python/${py_version}/python-${py_version}-embed-amd64.zip" -o tmp/python-${py_version}-embed.zip
           unzip tmp/python-${py_version}-embed.zip -d build/Python3
-          sed -i "s|#import|import site|g" $(ls build/Python3/*._pth)
+          sed -i "s|#import site|import site|g" $(ls build/Python3/*._pth)
           # echo "import site" > $(ls build/Python3/*._pth)
 
       - name: Install pip&cython
         run: |
           curl -fSL "https://bootstrap.pypa.io/get-pip.py" -o tmp/get-pip.py
           export PATH=$(pwd)/build/Python3:$(pwd)/build/Python3/Scripts:${PATH}
-          cd build/Python3
-          python ../../tmp/get-pip.py
+          echo "${PATH}"
+          python tmp/get-pip.py
           pip install cython
-          cd ../../
 
       - name: Install VapourSynth
         run: |
