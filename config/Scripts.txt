@@ -1,0 +1,6 @@
+adjust
+descale_script
+havsfunc
+mvsfunc
+nnedi3_resample
+xaa
