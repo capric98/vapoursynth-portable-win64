@@ -53,7 +53,6 @@ jobs:
       - name: Install Packages
         run: |
           export PATH=$(pwd)/build/Python3:$(pwd)/build/Python3/Scripts:${PATH}
-          vsrepo update
 
           repo_list=""
 
@@ -64,8 +63,9 @@ jobs:
             repo_list="${repo_list} ${pkg}"
           done
 
-          echo "vsrepo install ${repo_list}"
-          vsrepo install ${repo_list}
+          echo "vsrepo install ${repo_list} -p"
+          vsrepo update -p
+          vsrepo install ${repo_list} -p
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
