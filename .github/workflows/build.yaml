@@ -71,6 +71,7 @@ jobs:
         with:
           name: build
           path: build
+        if: success() || failure()
 
       # - name: Zip
       #   shell: cmd
