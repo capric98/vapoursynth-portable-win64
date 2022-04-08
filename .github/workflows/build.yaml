@@ -67,7 +67,7 @@ jobs:
           rm -rf $(find . -name __pycache__ -print0 | xargs -0 echo)
 
           cd build
-          python ../zip-r.py /tmp/VapourSynth64-Portable-${vs_version}.zip *
+          python ../zip-r.py ../VapourSynth64-Portable-${vs_version}.zip *
           cd ..
 
           date_utc=$(echo -e "from datetime import datetime\nprint(datetime.now().strftime(\"%Y-%m-%dT%H:%M:%SZ\"))" | python)
@@ -76,7 +76,7 @@ jobs:
 
           echo "RELEASE_NAME=${release_name//-/.}" >> $GITHUB_ENV
           echo "RELEASE_TAGNAME=${release_tagname//-/.}" >> $GITHUB_ENV
-          echo "RELEASE_FILENAME=/tmp/VapourSynth64-Portable-${vs_version}.zip" >> $GITHUB_ENV
+          echo "RELEASE_FILENAME=VapourSynth64-Portable-${vs_version}.zip" >> $GITHUB_ENV
 
           echo "RELEASE_BODY<<EOF" >> $GITHUB_ENV
           echo "### Info" >> $GITHUB_ENV
@@ -88,12 +88,6 @@ jobs:
           echo "\`${date_utc}\`" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
-      # - name: Upload Artifact
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: artifacts
-      #     path: build
-
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
@@ -104,7 +98,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload Artifact for Debugging
+      - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: repo
