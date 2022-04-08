@@ -46,13 +46,14 @@ jobs:
         run: |
           export PATH=$(pwd)/build/Python3:$(pwd)/build/Python3/Scripts:${PATH}
 
+          git clone https://github.com/vapoursynth/vsrepo
+          sed -i "/del vapoursynth_path/a\    pluginparent  = os.path.join(base_path, 'vapoursynth64' if is_64bits else 'vapoursynth32')" vsrepo/vsrepo.py
+
           repo_list="$(cat config/Scripts.txt) $(cat config/Plugins.txt)"
           repo_list=$(sed -e "s/^[ \n\t\r]+/ /"<<<"${repo_list}")
 
-          pip install vsrepo
-
-          vsrepo update -p
-          vsrepo install ${repo_list} -p
+          python vsrepo/vsrepo.py update
+          python vsrepo/vsrepo.py install ${repo_list} -s build/Python3/Lib/site-packages
 
       - name: Zip
         run: |
@@ -60,10 +61,13 @@ jobs:
           export py_version=$(cat config/Python.txt)
           export vs_version=$(cat config/VapourSynth.txt)
 
-          cd build
-          rm -rf Python3/doc
+          
+          rm -rf tmp
+          rm -rf build/Python3/doc
           rm -rf $(find . -name __pycache__ -print0 | xargs -0 echo)
-          python ../zip-r.py ../VapourSynth64-Portable-${vs_version}.zip *
+
+          cd build
+          python ../zip-r.py /tmp/VapourSynth64-Portable-${vs_version}.zip *
           cd ..
 
           date_utc=$(echo -e "from datetime import datetime\nprint(datetime.now().strftime(\"%Y-%m-%dT%H:%M:%SZ\"))" | python)
@@ -72,7 +76,7 @@ jobs:
 
           echo "RELEASE_NAME=${release_name//-/.}" >> $GITHUB_ENV
           echo "RELEASE_TAGNAME=${release_tagname//-/.}" >> $GITHUB_ENV
-          echo "RELEASE_FILENAME=VapourSynth64-Portable-${vs_version}.zip" >> $GITHUB_ENV
+          echo "RELEASE_FILENAME=/tmp/VapourSynth64-Portable-${vs_version}.zip" >> $GITHUB_ENV
 
           echo "RELEASE_BODY<<EOF" >> $GITHUB_ENV
           echo "### Info" >> $GITHUB_ENV
@@ -90,15 +94,15 @@ jobs:
       #     name: artifacts
       #     path: build
 
-      # - name: Release
-      #   uses: softprops/action-gh-release@v1
-      #   with:
-      #     name: ${{ env.RELEASE_NAME }}
-      #     tag_name: ${{ env.RELEASE_TAGNAME }}
-      #     body: ${{ env.RELEASE_BODY }}
-      #     files: ${{ env.RELEASE_FILENAME }}
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ${{ env.RELEASE_NAME }}
+          tag_name: ${{ env.RELEASE_TAGNAME }}
+          body: ${{ env.RELEASE_BODY }}
+          files: ${{ env.RELEASE_FILENAME }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Artifact for Debugging
         uses: actions/upload-artifact@v3
