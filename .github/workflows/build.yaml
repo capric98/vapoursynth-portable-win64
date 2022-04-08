@@ -80,7 +80,13 @@ jobs:
           
           date_utc=$(echo -e "from datetime import datetime\nprint(datetime.now().strftime(\"%Y-%m-%dT%H:%m:%SZ\"))" | python)
           echo "RELEASE_BODY<<EOF" >> $GITHUB_ENV
-          echo -e "Python: ${py_version}\nVapourSynth: ${vs_version}\nDate: ${date_utc}" >> $GITHUB_ENV
+          echo "### Info" >> $GITHUB_ENV
+          echo "|Library|Version|" >> $GITHUB_ENV
+          echo "|:---:|:---:|" >> $GITHUB_ENV
+          echo "|Python|${py_version}|" >> $GITHUB_ENV
+          echo "VapourSynth|${vs_version}|" >> $GITHUB_ENV
+          echo "" >> $GITHUB_ENV
+          echo "\`${date_utc}\`" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
       - name: Upload Artifact
