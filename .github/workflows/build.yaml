@@ -8,7 +8,7 @@ on:
       - ".github/workflows/build.yaml"
 
 jobs:
-  check:
+  build:
     runs-on: windows-latest
     defaults:
       run:
