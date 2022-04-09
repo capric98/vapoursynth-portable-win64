@@ -44,7 +44,7 @@ if __name__=="__main__":
     with open("config/Python.txt", mode="w", encoding="utf-8") as f:
         print(py_version, end=None, file=f)
 
-    print("Bump version to v0.{}.{}.".format(
+    print("bump version to v0.{}.{}".format(
         py_version.replace(".", ""),
         vs_version.replace("R", "").replace("C", "").replace("-", "."),
     ), end=None)
