@@ -4,8 +4,8 @@ on:
   push:
     paths:
       - "config/*.txt"
-      - ".github/workflows/*.yml"
-      - ".github/workflows/*.yaml"
+      - ".github/workflows/build.yml"
+      - ".github/workflows/build.yaml"
 
 jobs:
   check:
