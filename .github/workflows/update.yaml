@@ -28,6 +28,6 @@ jobs:
         git config --local user.name 'github-actions'
         git config --local user.email '41898282+github-actions[bot]@users.noreply.github.com'
         if [ -n "$(git status --porcelain)" ]; then
-            git commit -am "${MESSAGE}"
+            git commit -am "${MESSAGE} by actions"
         fi
         git push
