@@ -87,7 +87,7 @@ jobs:
           echo "" >> $GITHUB_ENV
           echo "\`${date_utc}\`" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
-          echo -e "print('RELEASE_TYPE=\"{}\"'.format('prerelease' if 'RC' in ''.upper() or 'TEST' in ''.upper() else 'release'))" | python >> $GITHUB_ENV
+          echo -e "print('RELEASE_TYPE=\"{}\"'.format('prerelease' if 'RC' in '${vs_version}'.upper() or 'TEST' in '${vs_version}'.upper() else 'release'))" | python >> $GITHUB_ENV
 
       - name: Release
         uses: softprops/action-gh-release@v1
