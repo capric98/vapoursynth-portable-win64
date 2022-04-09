@@ -3,6 +3,7 @@ name: Check Updates
 on:
   push:
     paths:
+      - '.github/workflows/update.yml'
       - '.github/workflows/update.yaml'
   schedule:
     - cron: '0 0 * * *'
