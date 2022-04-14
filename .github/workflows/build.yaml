@@ -3,9 +3,9 @@ name: Build
 on:
   push:
     paths:
-      - "config/*.txt"
-      - ".github/workflows/build.yml"
-      - ".github/workflows/build.yaml"
+      - 'config/*.txt'
+      - '.github/workflows/build.yml'
+      - '.github/workflows/build.yaml'
 
 jobs:
   build:
