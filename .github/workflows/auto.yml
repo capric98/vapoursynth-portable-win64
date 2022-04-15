@@ -32,7 +32,7 @@ jobs:
           export flag="no"
           for f in ${{ steps.files.outputs.all }}; do
             echo -n "\"${f}\" changed!   "
-            if [[ "${f}" =~ config/.*.txt ]]; then
+            if [[ "${f}" =~ (config/.*.txt|.github/workflows/auto.yml) ]]; then
               echo -n "❕"
               export flag="yes"
             fi
