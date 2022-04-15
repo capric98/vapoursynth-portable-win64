@@ -32,13 +32,18 @@ jobs:
         run: |
           export flag="no"
           for f in ${{ steps.files.outputs.all }}; do
+            echo -n "\"${f}\" changed!   "
             if [[ "${f}" =~ config/.*.txt ]]; then
+              echo -n "❕"
               export flag="yes"
             fi
+            echo ""
           done
           if [[ "${flag}" == "yes" ]]; then
+            echo "config-changed: true"
             echo "::set-output name=config-changed::true"
           else
+            echo "config-changed: false"
             echo "::set-output name=config-changed::false"
           fi
 
@@ -51,10 +56,12 @@ jobs:
           git config --local user.name 'github-actions'
           git config --local user.email '41898282+github-actions[bot]@users.noreply.github.com'
           if [[ -n "$(git status --porcelain)" ]]; then
+            echo "outdated: true"
             echo "::set-output name=outdated::true"
             git commit -am "${MESSAGE} by actions"
             git push
           else
+            echo "outdated: false"
             echo "::set-output name=outdated::false"
           fi
 
