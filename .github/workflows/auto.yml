@@ -14,8 +14,7 @@ jobs:
   update:
     runs-on: ubuntu-latest
     outputs:
-      outdated: ${{ steps.check.outputs.outdated }}
-      config-changed: ${{ steps.ls.outputs.config-changed}}
+      outdated: ${{ steps.judge.outputs.outdated }}
 
     steps:
       - uses: actions/checkout@v3
@@ -56,10 +55,21 @@ jobs:
           git config --local user.name 'github-actions'
           git config --local user.email '41898282+github-actions[bot]@users.noreply.github.com'
           if [[ -n "$(git status --porcelain)" ]]; then
-            echo "outdated: true"
-            echo "::set-output name=outdated::true"
+            echo "config-outdated: true"
+            echo "::set-output name=config-outdated::true"
             git commit -am "${MESSAGE} by actions"
             git push
+          else
+            echo "config-outdated: false"
+            echo "::set-output name=config-outdated::false"
+          fi
+
+      - name: Judge
+        id: judge
+        run: |
+          if [[ ${{ steps.ls.outputs.config-changed }} == "true" ]] || [[ ${{ steps.ls.outputs.config-outdated }} == "true" ]]; then
+            echo "outdated: true"
+            echo "::set-output name=outdated::true"
           else
             echo "outdated: false"
             echo "::set-output name=outdated::false"
@@ -68,7 +78,7 @@ jobs:
 
   build:
     needs: update
-    if: ${{ needs.update.outputs.outdated == 'true' }} || ${{ needs.update.outputs.config-changed == 'true' }}
+    if: ${{ needs.update.outputs.outdated == 'true' }}
 
     runs-on: windows-latest
     defaults:
