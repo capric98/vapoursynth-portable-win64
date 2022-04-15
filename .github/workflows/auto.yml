@@ -144,7 +144,7 @@ jobs:
           date_utc=$(echo -e "from datetime import datetime\nprint(datetime.now().strftime(\"%Y-%m-%dT%H:%M:%SZ\"))" | python)
           # release_name="v0.${py_version//.}.${vs_version//[RC]}"
           # release_tagname="v0.${py_version//.}.${vs_version//[RC]}+${GITHUB_SHA::7}"
-          release_name="${vs_version} (${py_version})"
+          release_name="${vs_version} [${py_version}]"
           release_tagname="${vs_version}+${GITHUB_SHA::7}"
 
           # echo "RELEASE_NAME=${release_name//-/.}" >> $GITHUB_ENV
