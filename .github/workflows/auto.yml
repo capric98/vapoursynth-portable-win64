@@ -67,7 +67,7 @@ jobs:
       - name: Judge
         id: judge
         run: |
-          if [[ "${{ steps.ls.outputs.config-changed }}"" == "true" || "${{ steps.check.outputs.config-outdated }}" == "true" ]]; then
+          if [[ "${{ steps.ls.outputs.config-changed }}" == "true" ]] || [[ "${{ steps.check.outputs.config-outdated }}" == "true" ]]; then
             echo "outdated: true"
             echo "::set-output name=outdated::true"
           else
