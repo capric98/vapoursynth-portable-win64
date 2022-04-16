@@ -26,7 +26,7 @@ jobs:
 
       - name: List Changed Files
         id: files
-        if: ${{ env.GITHUB_EVENT_NAME == "push" }}
+        if: ${{ env.GITHUB_EVENT_NAME == 'push' }}
         uses: jitterbit/get-changed-files@v1
 
       - name: Check Configs
