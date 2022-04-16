@@ -18,13 +18,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - id: files
-        uses: jitterbit/get-changed-files@v1
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v3
         with:
           python-version: '3.10'
+
+      - name: List Changed Files
+        id: files
+        if: ${{ env.GITHUB_EVENT_NAME == "push" }}
+        uses: jitterbit/get-changed-files@v1
 
       - name: Check Configs
         id: ls
