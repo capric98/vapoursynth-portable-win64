@@ -91,7 +91,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - run: echo "${{ needs.update.outputs.outdated }}"
 
       - name: Install Python
         run: |
