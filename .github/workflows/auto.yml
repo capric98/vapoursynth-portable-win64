@@ -24,15 +24,9 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: DEBUG
-        env:
-          EVENT_NAME: ${{ env.GITHUB_EVENT_NAME }}
-        run: |
-          echo "${EVENT_NAME}"
-
       - name: List Changed Files
         id: files
-        if: ${{ env.GITHUB_EVENT_NAME == 'push' }}
+        if: github.event_name == 'push'
         uses: jitterbit/get-changed-files@v1
 
       - name: Check Configs
