@@ -92,6 +92,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Update Config
+        run: |
+          python -m pip install requests
+          python update.py
+
       - name: Install Python
         run: |
           mkdir build && mkdir tmp && cp bootstrap.bat build/bootstrap.bat
