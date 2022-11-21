@@ -17,14 +17,22 @@ def get_latest_py(tags: list[str], major_ver: str) -> str:
     return f"{major_ver}.{max_minor}"
 
 if __name__=="__main__":
+    resp = requests.get("https://api.github.com/repos/vapoursynth/vapoursynth/releases")
+    resp.raise_for_status()
+    releases = resp.json()
+    vs_version = releases[0]["name"]
+
     resp = requests.get("https://api.github.com/repos/vapoursynth/vapoursynth/tags")
     resp.raise_for_status()
     tags = resp.json()
-    vs_version = tags[0]["name"]
+    for tag in tags:
+        if tag["name"] == vs_version:
+            commit = tag["commit"]["sha"]
+            break
 
     resp = requests.get(
         "https://raw.githubusercontent.com/vapoursynth/vapoursynth/"+
-        tags[0]["commit"]["sha"]+
+        commit+
         "/installer/vsinstaller.iss"
     )
     resp.raise_for_status()
