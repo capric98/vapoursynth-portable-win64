@@ -1,6 +1,7 @@
 adjust
 descale_script
 havsfunc
+insaneAA
 mvsfunc
 nnedi3_resample
 xaa
