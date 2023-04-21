@@ -76,10 +76,12 @@ jobs:
         run: |
           if [[ "${{ steps.ls.outputs.config-changed }}" == "true" ]] || [[ "${{ steps.check.outputs.config-outdated }}" == "true" ]]; then
             echo "outdated: true"
-            echo "::set-output name=outdated::true"
+            # echo "::set-output name=outdated::true"
+            echo "outdated=true" >> $GITHUB_OUTPUT
           else
             echo "outdated: false"
-            echo "::set-output name=outdated::false"
+            # echo "::set-output name=outdated::false"
+            echo "outdated=false" >> $GITHUB_OUTPUT
           fi
 
 
