@@ -43,10 +43,12 @@ jobs:
           done
           if [[ "${flag}" == "yes" ]]; then
             echo "config-changed: true"
-            echo "::set-output name=config-changed::true"
+            # echo "::set-output name=config-changed::true"
+            echo "config-changed=true" >> $GITHUB_OUTPUT
           else
             echo "config-changed: false"
-            echo "::set-output name=config-changed::false"
+            # echo "::set-output name=config-changed::false"
+            echo "config-changed=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Check Updates
@@ -59,12 +61,14 @@ jobs:
           git config --local user.email '41898282+github-actions[bot]@users.noreply.github.com'
           if [[ -n "$(git status --porcelain)" ]]; then
             echo "config-outdated: true"
-            echo "::set-output name=config-outdated::true"
+            # echo "::set-output name=config-outdated::true"
+            echo "config-outdated=true" >> $GITHUB_OUTPUT
             git commit -am "${MESSAGE} by actions"
             git push
           else
             echo "config-outdated: false"
-            echo "::set-output name=config-outdated::false"
+            # echo "::set-output name=config-outdated::false"
+            echo "config-outdated=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Judge
