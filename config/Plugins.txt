@@ -23,6 +23,5 @@ tcm
 tedgemask
 vfrtocfr
 vivtc
-vsf
 vsfm
 vsutil
