@@ -127,7 +127,7 @@ jobs:
 
           export PATH=$(pwd)/build/Python3:$(pwd)/build/Python3/Scripts:${PATH}
           export py_mm_version=$(python -c "print(''.join('$(cat config/Python.txt)'.split('.')[:2]), end='')")
-          export vs_s_version=$(python -c "print('${vs_version}'[1:]), end='')")
+          export vs_s_version=$(python -c "print('${vs_version}'[1:], end='')")
 
           python -m pip install $(pwd)/build/Python3/wheel/VapourSynth-${vs_s_version}-cp${py_mm_version}-cp${py_mm_version}-win_amd64.whl
 
