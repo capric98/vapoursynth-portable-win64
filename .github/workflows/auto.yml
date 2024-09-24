@@ -139,7 +139,7 @@ jobs:
           export PATH=$(pwd)/build/Python3:$(pwd)/build/Python3/Scripts:${PATH}
 
           git clone https://github.com/vapoursynth/vsrepo
-          sed -i "/del vapoursynth_path/a\    pluginparent  = os.path.join(base_path, 'vapoursynth64' if is_64bits else 'vapoursynth32')" vsrepo/vsrepo.py
+          # sed -i "/del vapoursynth_path/a\    pluginparent  = os.path.join(base_path, 'vapoursynth64' if is_64bits else 'vapoursynth32')" vsrepo/vsrepo.py
 
           repo_list="$(cat config/Scripts.txt) $(cat config/Plugins.txt)"
           repo_list=$(sed -e "s/^[ \n\t\r]+/ /"<<<"${repo_list}")
