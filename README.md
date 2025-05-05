@@ -1,6 +1,6 @@
 # vapoursynth-portable-win64
 
-Run a portable version of vapoursynth out-of-the-box, so you can install any version of Python you like in `PATH` without breaking any dependencies.
+Run a portable version of [vapoursynth](https://github.com/vapoursynth/vapoursynth) out-of-the-box, so you can install any version of Python you like in `PATH` without breaking any dependencies.
 
 ## Packages
 
