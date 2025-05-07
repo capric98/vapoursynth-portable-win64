@@ -122,7 +122,7 @@ jobs:
 
       - name: Install VapourSynth
         run: |
-          export vs_version=$(cat config/VapourSynth.txt)
+          export vs_version=$(python -c "print('$(cat config/VapourSynth.txt)'.split('-')[0], end='')")
           curl -fSL "https://github.com/vapoursynth/vapoursynth/releases/download/${vs_version}/VapourSynth64-Portable-${vs_version}.zip" -o tmp/VapourSynth64-Portable-${vs_version}.zip
           7z x tmp/VapourSynth64-Portable-${vs_version}.zip -obuild/Python3 -aos
 
