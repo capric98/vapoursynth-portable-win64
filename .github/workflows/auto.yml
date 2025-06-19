@@ -124,16 +124,15 @@ jobs:
       - name: Install VapourSynth
         run: |
           export vs_version=$(cat config/VapourSynth.txt)
-          export vs_compact_version=$(python -c "print('$(cat config/VapourSynth.txt)'.split('-')[0], end='')")
-          curl -fSL "https://github.com/vapoursynth/vapoursynth/releases/download/${vs_version}/VapourSynth64-Portable-${vs_compact_version}.zip" -o tmp/VapourSynth64-Portable-${vs_version}.zip
+          export vs_wheel_file=$(cat config/VapourSynthWheel.txt)
+          export vs_portable_link=$(cat config/VapourSynthPortable.txt)
+
+          curl -fSL "${vs_portable_link}" -o tmp/VapourSynth64-Portable-${vs_version}.zip
           7z x tmp/VapourSynth64-Portable-${vs_version}.zip -obuild/Python3 -aos
 
           export PATH=$(pwd)/build/Python3:$(pwd)/build/Python3/Scripts:${PATH}
-          export py_mm_version=$(python -c "print(''.join('$(cat config/Python.txt)'.split('.')[:2]), end='')")
-          export vs_s_version=$(python -c "print('${vs_version}'[1:], end='')")
 
-          python -m pip install $(pwd)/build/Python3/wheel/VapourSynth-${vs_s_version}-cp${py_mm_version}-cp${py_mm_version}-win_amd64.whl
-
+          python -m pip install "$(pwd)/build/Python3/wheel/${vs_wheel_file}"
           VSPipe -v
 
       - name: Install Packages
