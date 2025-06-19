@@ -37,7 +37,8 @@ if __name__=="__main__":
     for asset in releases["assets"]:
         asset_name = asset["name"]
         if "portable" in asset_name.lower() and asset_name.lower().endswith(".zip"):
-            vs_portable_download_link = asset["browser_download_url"]
+            if not vs_portable_download_link or len(vs_portable_download_link)>len(asset["browser_download_url"]):
+                vs_portable_download_link = asset["browser_download_url"]
 
     if not vs_portable_download_link:
         raise Exception("No portable download link found!")
