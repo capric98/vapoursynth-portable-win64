@@ -3,15 +3,25 @@
 import re
 import requests
 
+
 def get_latest_py(tags: list[str], version: str) -> str:
     max_minor = -1
 
     for tag in tags:
         if re.match(f"v{version}.[0-9]+$", tag):
             minor = int(re.search(r"(?<=.)[0-9]+$", tag).group(0))
-            max_minor = max(minor, max_minor)
+
+            try:
+                py_version = f"{version}.{minor}"
+                resp = requests.head(f"https://www.python.org/ftp/python/${py_version}/python-{py_version}-embed-amd64.zip")
+                resp.raise_for_status()
+            except:
+                pass
+            else:
+                max_minor = max(minor, max_minor)
 
     return f"{version}.{max_minor}" if max_minor!=-1 else ""
+
 
 if __name__=="__main__":
     resp = requests.get("https://api.github.com/repos/vapoursynth/vapoursynth/releases/latest")
