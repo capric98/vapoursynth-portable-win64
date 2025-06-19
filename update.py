@@ -2,7 +2,7 @@
 # coding: utf-8
 import re
 import requests
-
+import time
 
 def get_latest_py(tags: list[str], version: str) -> str:
     max_minor = -1
@@ -10,15 +10,17 @@ def get_latest_py(tags: list[str], version: str) -> str:
     for tag in tags:
         if re.match(f"v{version}.[0-9]+$", tag):
             minor = int(re.search(r"(?<=.)[0-9]+$", tag).group(0))
+            py_version = f"{version}.{minor}"
 
             try:
-                py_version = f"{version}.{minor}"
-                resp = requests.head(f"https://www.python.org/ftp/python/${py_version}/python-{py_version}-embed-amd64.zip")
+                resp = requests.head(f"https://www.python.org/ftp/python/{py_version}/python-{py_version}-embed-amd64.zip")
                 resp.raise_for_status()
-            except:
-                pass
+            except Exception as _:
+                print(f"Python {py_version} may not have an precompiled embedded release...")
             else:
                 max_minor = max(minor, max_minor)
+            finally:
+                time.sleep(1)
 
     return f"{version}.{max_minor}" if max_minor!=-1 else ""
 
@@ -77,7 +79,7 @@ if __name__=="__main__":
         print(e)
         print(resp.text)
 
-    resp = requests.get("https://api.github.com/repos/python/cpython/tags")
+    resp = requests.get("https://api.github.com/repos/python/cpython/tags?per_page=50")
     resp.raise_for_status()
     tags = resp.json()
 
