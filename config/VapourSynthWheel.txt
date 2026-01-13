@@ -1,1 +1,1 @@
-VapourSynth-72-cp312-abi3-win_amd64.whl
+VapourSynth-73-cp312-abi3-win_amd64.whl
