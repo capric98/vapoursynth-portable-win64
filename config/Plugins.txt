@@ -1,6 +1,7 @@
 bas
 bm3d
 bm3dcuda
+bm3dcuda_rtc
 deblock
 delogo
 delogohd
@@ -24,4 +25,5 @@ tedgemask
 vfrtocfr
 vivtc
 vsfm
+vsjetpack
 vsutil
