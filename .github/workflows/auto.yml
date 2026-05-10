@@ -139,14 +139,16 @@ jobs:
         run: |
           export PATH=$(pwd)/build/Python3:$(pwd)/build/Python3/Scripts:${PATH}
 
-          git clone https://github.com/vapoursynth/vsrepo
+          # git clone https://github.com/vapoursynth/vsrepo
           # sed -i "/del vapoursynth_path/a\    pluginparent  = os.path.join(base_path, 'vapoursynth64' if is_64bits else 'vapoursynth32')" vsrepo/vsrepo.py
+
+          pip install vsrepo
 
           repo_list="$(cat config/Scripts.txt) $(cat config/Plugins.txt)"
           repo_list=$(sed -e "s/^[ \n\t\r]+/ /"<<<"${repo_list}")
 
-          python vsrepo/vsrepo.py update
-          python vsrepo/vsrepo.py install ${repo_list} -s build/Python3/Lib/site-packages
+          vsrepo update
+          vsrepo install ${repo_list} -s build/Python3/Lib/site-packages
 
       - name: Zip
         run: |
