@@ -1,4 +1,3 @@
-bas
 bm3d
 bm3dcuda
 bm3dcuda_rtc
