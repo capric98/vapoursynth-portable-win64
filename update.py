@@ -60,6 +60,20 @@ if __name__=="__main__":
     resp.raise_for_status()
 
     vs_current_release = resp.text.strip().split(" ")[-1].strip().split(" ")[0] # VS_CURRENT_RELEASE
+    vs_version_extra = ""
+
+    try:
+        resp = requests.get(
+            "https://raw.githubusercontent.com/vapoursynth/vapoursynth/"+
+            commit+
+            "/VAPOURSYNTH_VERSION_EXTRA"
+        )
+        resp.raise_for_status()
+
+        vs_version_extra = resp.text.strip().split(" ")[-1].strip()
+
+    except Exception as e:
+        pass
 
 
     resp = requests.get(
@@ -74,13 +88,23 @@ if __name__=="__main__":
         # py_minor_version_high = int(re.search(r"(?<=PythonVersionMinorHigh )[0-9]+", resp.text).group(0))
         py_minor_version  = int(re.search(r"(?<=-cp3)[0-9]+(?=-abi)", resp.text).group(0))
         vs_wheel_filename = re.search(r"(?<=WheelFilename\(Version\) ).*?\.whl'", resp.text).group(0)
-        version_var_name  = re.search(r"(?<=\+).*?(?=\+)", vs_wheel_filename).group(0).strip()
-        vs_wheel_filename = eval(vs_wheel_filename, {version_var_name: vs_current_release})
-    except AttributeError as e:
-        print(e)
-        print(resp.text)
 
-    resp = requests.get("https://api.github.com/repos/python/cpython/tags?per_page=50")
+        var_names = [s.strip() for s in vs_wheel_filename.split("+")]
+        var_names = [s for s in var_names if not (s[0] in ["'", '"'] and s[-1] in ["'", '"'])]
+        var_names += ["VERSION", "VersionExtra"] # make sure len(var_names) >= 2
+
+        vs_wheel_filename = eval(
+            vs_wheel_filename,
+            {
+                var_names[0]: vs_current_release,
+                var_names[1]: vs_version_extra,
+            }
+        )
+    except Exception as e:
+        print(e)
+        # print(resp.text)
+
+    resp = requests.get("https://api.github.com/repos/python/cpython/tags?per_page=100")
     resp.raise_for_status()
     tags = resp.json()
 
