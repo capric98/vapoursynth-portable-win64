@@ -148,7 +148,7 @@ jobs:
           repo_list=$(sed -e "s/^[ \n\t\r]+/ /"<<<"${repo_list}")
 
           vsrepo update
-          vsrepo install ${repo_list} -s build/Python3/Lib/site-packages
+          vsrepo install ${repo_list}
 
       - name: Zip
         run: |
