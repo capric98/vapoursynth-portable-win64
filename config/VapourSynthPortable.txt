@@ -1,1 +1,1 @@
-https://github.com/vapoursynth/vapoursynth/releases/download/R75/VapourSynth64-Portable-R75.zip
+https://github.com/vapoursynth/vapoursynth/releases/download/R76/VapourSynth64-Portable-R76.zip
